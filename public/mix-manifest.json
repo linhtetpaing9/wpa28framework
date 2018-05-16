@@ -1,4 +1,6 @@
 {
+    "/js/media-manager.js": "/js/media-manager.js",
+    "/css/media-manager.css": "/css/media-manager.css",
     "/js/dashboard.js": "/js/dashboard.js",
     "/css/dashboard.css": "/css/dashboard.css"
 }

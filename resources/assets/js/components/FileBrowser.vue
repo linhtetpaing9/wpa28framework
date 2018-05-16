@@ -1,13 +1,4 @@
-@extends('layout')
-
-@section('content')
-    <h1>
-        <a href="https://github.com/talvbansal/media-manager">
-            Media-manager example laravel project
-        </a>
-    </h1>
-    <hr>
-  
+<template>
     <div>
         <media-modal v-if="showMediaManager" @media-modal-close="showMediaManager = false">
             <media-manager
@@ -35,4 +26,30 @@
 
     </div>
 
-@endsection
+</template>
+
+<script>
+    export default {
+
+        data() {
+            return {
+                showMediaManager: false,
+                pageImage: null,
+            }
+        },
+
+        mounted() {
+            window.eventHub.$on('media-manager-selected-editor', (file) => {
+                // Do something with the file info...
+                console.log(file.name);
+                console.log(file.mimeType);
+                console.log(file.relativePath);
+                console.log(file.webPath);
+                this.pageImage = file.webPath;
+
+                // Hide the Media Manager...
+                this.showMediaManager = false;
+            });
+        }
+    }
+</script>

@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/admin/upload', function () {
+    return view('upload');
+})->name('upload.data');
+
+\TalvBansal\MediaManager\Routes\MediaRoutes::get();
 
 Auth::routes();
 Route::resource('/admin/role', 'RoleController')->except('data');
