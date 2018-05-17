@@ -24,7 +24,7 @@
 			<div class="form-group">
 				<a href="{{route('role.create')}}" class="btn btn-success">Add</a>
 			</div>
-			@can('show-task', $role)
+
 			<table class="table table-bordered" id="roles-table">
 				<thead>
 					<tr>
@@ -36,7 +36,7 @@
 					</tr>
 				</thead>
 			</table>  
-			@endcan
+
 		</div>
 	</div>
 </div>

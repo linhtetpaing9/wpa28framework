@@ -12,7 +12,7 @@
 			<div class="card-two">
 				<header>
 					<div class="avatar">
-						<img src="https://randomuser.me/api/portraits/women/21.jpg" alt="Allison Walker" />
+						<img src="{{$user->profile_image}}" alt="{{$user->name}}" />
 					</div>
 				</header>
 

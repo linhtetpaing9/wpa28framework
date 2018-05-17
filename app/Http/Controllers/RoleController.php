@@ -13,7 +13,7 @@ class RoleController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('superadmin');
+        // $this->middleware('superadmin');
     }
     /**
      * Display a listing of the resource.
@@ -22,12 +22,12 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $user = \Auth::user();
-        if($user->is_admin){
-            $role = Role::paginate(10);
-        }else{
-            $role = Role::where('user_id', $user->id)->paginate(10);
-        }
+        // $user = \Auth::user();
+        // if($user->is_admin){
+        //     $role = Role::paginate(10);
+        // }else{
+        //     $role = Role::where('user_id', $user->id)->paginate(10);
+        // }
         
         return view('roles.index', compact('role'));
     }

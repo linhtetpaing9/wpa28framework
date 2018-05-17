@@ -13,7 +13,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('superadmin');
+        // $this->middleware('superadmin');
     }
     /**
      * Display a listing of the resource.
@@ -49,7 +49,9 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'profile_image' => 'required'
         ]);
+
     
         if($request->is_admin == "true"){
             $request->is_admin = true;
@@ -67,6 +69,7 @@ class UserController extends Controller
             'email' => $request->email,
             'slug' => $slug,
             'is_admin' => $request->is_admin,
+            'profile_image' => $request->profile_image,
             'password' => bcrypt('$request->password'),
 
 
@@ -171,7 +174,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $role = Role::pluck('name', 'id');
+        return view('users.edit', compact('user', 'role'));
     }
 
     /**
@@ -183,7 +187,44 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $this->validate(request(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:6|confirmed',
+            'profile_image' => 'required'
+        ]);
+
+        $user = User::where('id', $user->id)->first();
+        $user->roles()->detach();
+
+        if($request->is_admin == "true"){
+            $request->is_admin = true;
+        }else {
+            $request->is_admin = false;
+        }
+
+
+
+        $name = $request->name;
+        $slug = str_slug($name, "-");
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'slug' => $slug,
+            'is_admin' => $request->is_admin,
+            'profile_image' => $request->profile_image,
+            'password' => bcrypt('$request->password'),
+
+
+        ]);
+
+
+        $user = User::where('name', $request->name)->first();
+        $role = Role::where('id', $request->role_id)->first();
+        $user->roles()->attach($role);
+
+        return Redirect::route('user.index');
     }
 
     /**

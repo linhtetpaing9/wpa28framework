@@ -11,7 +11,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('css/media-manager.css') }}" rel="stylesheet">
 
 </head>
 <body>

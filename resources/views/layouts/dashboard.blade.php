@@ -12,9 +12,10 @@
 
 <body class="fix-header fix-sidebar">
 
-
+    
     <!-- Main wrapper  -->
     <div id="main-wrapper">
+        
         <!-- header header  -->
 
         @include('layouts.nav')
