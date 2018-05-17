@@ -24,7 +24,8 @@
 		<div class="card-body"> 
 			<div class="col-lg-10 mx-auto">
 
-				<form action="{{route('user.store')}}" method="POST" class="form-horizontal form-bordered">
+				<form action="{{route('user.update', $user->slug)}}" method="POST" class="form-horizontal form-bordered">
+					{{ method_field('PATCH') }}
 					{{csrf_field()}}
 					<div class="form-body">
 						<div class="form-group row {{ $errors->has('name') ? ' has-error' : '' }}">
@@ -32,7 +33,7 @@
 								<label class="control-label text-right">Name</label>
 							</div>
 							<div class="col-md-9">
-								<input type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+								<input type="text" class="form-control" name="name" value="{{$user->name}}" required autofocus>
 
 								@if ($errors->has('name'))
 								<span class="help-block">
@@ -83,7 +84,7 @@
 							<label class="control-label text-right">Email</label>
 						</div>
 						<div class="col-md-9">
-							<input type="text" class="form-control" name="email" value="{{ old('email') }}" required>
+							<input type="text" class="form-control" name="email" value="{{$user->email }}" required>
 
 							@if ($errors->has('email'))
 							<span class="help-block">

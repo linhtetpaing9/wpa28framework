@@ -10,6 +10,11 @@ let mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+mix.js([
+	'resources/assets/talvbansal/media-manager/js/media-manager.js',
+	'resources/assets/js/media-manager-custom.js'
+	], 'public/js/mediamanager.js')
+   .styles('resources/assets/talvbansal/media-manager/css/media-manager.css', 'public/css/mediamanager.css');
 
  mix.scripts([
  	'resources/assets/js/jquery.min.js',
@@ -23,7 +28,7 @@ let mix = require('laravel-mix');
  	'resources/assets/js/jquery.nicescroll.min.js',
  	'resources/assets/js/jquery.validate.min.js',
  	'resources/assets/js/jquery.validate.unobtrusive.min.js',
- 	'resources/assets/js/app.js',
+ 	'resources/assets/js/scroll.js',
 
  	], 'public/js/dashboard.js')
  .styles([

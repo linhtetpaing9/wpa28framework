@@ -10,12 +10,15 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
+
+Route::get('/admin/upload', function () {
+    return view('upload');
+})->name('upload.data');
+
+\TalvBansal\MediaManager\Routes\MediaRoutes::get();
+
+
 Route::resource('/admin/role', 'RoleController')->except('data');
 Route::get("/admin/role-data", "RoleController@data")->name("role.data");
 

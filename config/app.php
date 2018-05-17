@@ -169,6 +169,7 @@ return [
          */
         Yajra\Datatables\DatatablesServiceProvider::class,
         Yajra\DataTables\ButtonsServiceProvider::class,
+        \TalvBansal\MediaManager\Providers\MediaManagerServiceProvider::class,
         /*
          * Application Service Providers...
          */
