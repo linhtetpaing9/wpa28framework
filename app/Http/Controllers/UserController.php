@@ -70,7 +70,7 @@ class UserController extends Controller
             'slug' => $slug,
             'is_admin' => $request->is_admin,
             'profile_image' => $request->profile_image,
-            'password' => bcrypt('$request->password'),
+            'password' => bcrypt($request->password),
 
 
         ]);
@@ -214,17 +214,19 @@ class UserController extends Controller
             'slug' => $slug,
             'is_admin' => $request->is_admin,
             'profile_image' => $request->profile_image,
-            'password' => bcrypt('$request->password'),
+            'password' => bcrypt($request->password),
 
 
         ]);
-        auth()->logout();
-        auth()->login($user);
+        
 
 
         $user = User::where('name', $request->name)->first();
         $role = Role::where('id', $request->role_id)->first();
         $user->roles()->attach($role);
+
+        
+        auth()->login($user);
 
         return Redirect::route('user.index');
     }

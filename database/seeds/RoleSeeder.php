@@ -21,16 +21,17 @@ class RoleSeeder extends Seeder
 
         	]
         ]);
-        // Role::create([
+        Role::create([
 
-        // 	'name' => 'Editor',
-        // 	'slug' => 'admin',
-        // 	'permissions' => [
-        // 		'update-task' => true,
-        // 		'show-task' => true
+        	'name' => 'User',
+        	'slug' => 'user',
+        	'permissions' => [
+        		'update-task' => false,
+        		'show-task' => true,
+                'delete-task' => false
 
-        // 	]
+        	]
 
-        // ]);
+        ]);
     }
 }
