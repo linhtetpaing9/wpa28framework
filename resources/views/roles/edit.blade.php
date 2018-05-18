@@ -29,13 +29,13 @@
 						<div class="form-group row">
 							
 							<div class="col-md-4">
-								<input type="checkbox" name="show" value='true' required>Show
+								<input type="checkbox" name="show" value='true'>Show
 							</div>
 							<div class="col-md-4">
-								<input type="checkbox" name="update" value='true' required>Update
+								<input type="checkbox" name="update" value='true'>Update
 							</div>
 							<div class="col-md-4">
-								<input type="checkbox" name="delete" value='true' required>Delete
+								<input type="checkbox" name="delete" value='true'>Delete
 							</div>
 
 						</div>

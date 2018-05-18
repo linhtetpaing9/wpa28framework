@@ -6,6 +6,9 @@ use App\Role;
 use App\User;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Redirect;
+use App\Repositories\Users;
+use App\Repositories\Roles;
+use App\Repositories\Requests;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -21,15 +24,8 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        // $user = \Auth::user();
-        // if($user->is_admin){
-        //     $role = Role::paginate(10);
-        // }else{
-        //     $role = Role::where('user_id', $user->id)->paginate(10);
-        // }
-        
-        return view('roles.index', compact('role'));
+    {  
+        return view('roles.index');
     }
 
     /**
@@ -48,49 +44,16 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Requests $requests, Roles $roles)
     {
+        $this->validate($requests->validate(), $requests->roleCreateData());
+
+        $roles->create();
         
-        $this->validate(request(), [
-            'name' => 'required'
-        ]);
-    
-
-        if($request->delete == "true"){
-            $request->delete = true;
-        }else {
-            $request->delete = false;
-        }
-
-        if($request->show == "true"){
-            $request->show = true;
-        }else{
-            $request->show = false;
-        }
-
-        if($request->update == "true"){
-            $request->update = true;
-        }else{
-            $request->update = false;
-        }
-
-        $name = $request->name;
-        $slug = str_slug($name, "-");
-
-        Role::create([
-            'name' => $request->name,
-            'slug' => $slug,
-            'permissions' => [
-                'update-task' => $request->update,
-                'delete-task' => $request->delete,
-                'show-task' => $request->show
-
-            ]
-
-        ]);
-         return Redirect::route('role.index');
+        return Redirect::route('role.index');
     }
-    public function data(Request $request)
+    
+    public function datatable(Request $request)
     {
 
         if($request->ajax()){
@@ -146,45 +109,11 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Requests $requests, Roles $roles)
     {
-        $this->validate(request(), [
-            'name' => 'required',
-            'permissions' => 'required'
-        ]);
+        $this->validate($requests->validate(), $requests->roleCreateData());
 
-        if($request->delete == "true"){
-            $request->delete = true;
-        }else {
-            $request->delete = false;
-        }
-
-        if($request->show == "true"){
-            $request->show = true;
-        }else{
-            $request->show = false;
-        }
-
-        if($request->update == "true"){
-            $request->update = true;
-        }else{
-            $request->update = false;
-        }
-
-        $name = $request->name;
-        $slug = str_slug($name, "-");
-
-        $role->update([
-            'name' => $request->name,
-            'slug' => $slug,
-            'permissions' => [
-                'update-task' => $request->update,
-                'delete-task' => $request->delete,
-                'show-task' => $request->show
-
-            ]
-
-        ]);
+        $roles->update();
 
         return Redirect::route('role.index');
     }
@@ -195,12 +124,10 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy(Role $role, Roles $roles)
     {
-        $role = Role::where('slug', $role->slug)->delete();
-        
-        $role = Role::where('slug', $role->slug)->first();
-
+        $roles->detachID($role);
+        $roles->delete($role);
         return Redirect::route('role.index');
     }
 }

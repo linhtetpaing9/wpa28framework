@@ -27,7 +27,7 @@ class Users{
         $name = $this->request->name;
         $slug = str_slug($name, "-");
 
-		return $this->user->create([
+		$this->user->create([
             'name' => $this->request->name,
             'email' => $this->request->email,
             'slug' => $slug,

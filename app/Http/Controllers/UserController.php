@@ -18,27 +18,27 @@ class UserController extends Controller
         $this->middleware('auth');
         $this->middleware('superadmin');
     }
- 
+
 
     public function index()
     {
-        
+
         return view('users.index');
     }
 
- 
+
     public function create(Roles $roles)
     {
         $role = $roles->pluck();
         return view('users.create', compact('role'));
     }
 
-  
+
     public function store(Requests $requests, Users $users)
     {
-        
+
         $this->validate($requests->validate(), $requests->userCreateData());
-      
+
         $users->create();
 
         $users->attachID();
@@ -48,40 +48,11 @@ class UserController extends Controller
     }
 
 
-    public function getData(Request $request)
-    {
-        
 
-        if($request->ajax()){
-
-            $model = User::query();
-            
-            return Datatables::of($model)
-            ->addColumn("show", function($model){
-                $data = "<a href=" . route("user.show", $model->slug) . ">$model->name</a>";
-                return $data;
-            })
-            ->addColumn("edit", function($model){
-                $data = "<a class='btn btn-primary' href=" . route("user.edit", $model->slug) . ">Edit</a>";
-                return $data;
-            })
-            ->addColumn("delete", function($model){
-                $data = '<form action="' . route('user.destroy', $model->slug). '" method="post">'
-                . csrf_field() .
-                method_field("delete") .
-                '<button class="btn btn-danger">Delete</button>
-                </form>';
-                return $data;
-            })
-            ->rawColumns(['show','edit', 'delete'])
-            ->toJson();
-        }
-        return abort(404);
-    }
 
     public function show(User $user, Users $users)
     {
-        
+
 
         $roles = $user->roles;
         $roles_status = $users->show($roles);
@@ -127,5 +98,35 @@ class UserController extends Controller
         $users->detachID($user);
         $users->delete($user);
         return Redirect::route('user.index');
+    }
+
+
+    public function datatable(Request $request)
+    {
+        if($request->ajax()){
+
+            $model = User::query();
+            
+            return Datatables::of($model)
+            ->addColumn("show", function($model){
+                $data = "<a href=" . route("user.show", $model->slug) . ">$model->name</a>";
+                return $data;
+            })
+            ->addColumn("edit", function($model){
+                $data = "<a class='btn btn-primary' href=" . route("user.edit", $model->slug) . ">Edit</a>";
+                return $data;
+            })
+            ->addColumn("delete", function($model){
+                $data = '<form action="' . route('user.destroy', $model->slug). '" method="post">'
+                . csrf_field() .
+                method_field("delete") .
+                '<button class="btn btn-danger">Delete</button>
+                </form>';
+                return $data;
+            })
+            ->rawColumns(['show','edit', 'delete'])
+            ->toJson();
+        }
+        return abort(404);
     }
 }

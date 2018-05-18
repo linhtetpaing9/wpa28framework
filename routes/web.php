@@ -20,13 +20,13 @@ Route::prefix('admin')->group(function(){
 
 
 	Route::resource('role', 'RoleController')->except('data');
-	Route::get("role-data", "RoleController@data")->name("role.data");
+	Route::get("role-data", "RoleController@datatable")->name("role.data");
 
 
 
 	Route::resource('user', 'UserController')->except(['getData', 'edit', 'upload']);
 	Route::get('user/{user}/edit', 'UserController@edit')->name('user.edit');
-	Route::get("user-data", "UserController@getData")->name("user.data");
+	Route::get("user-data", "UserController@datatable")->name("user.data");
 	Route::get('upload', 'UserController@upload')->name('upload.data');
 });
 

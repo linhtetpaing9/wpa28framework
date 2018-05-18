@@ -33,4 +33,20 @@ class Requests{
             'profile_image' => 'required'
         ];
 	}
+
+
+	public function roleCreateData()
+	{
+		return [
+            'name' => 'required'
+        ];
+	}
+
+	public function roleEditData()
+	{
+		return [
+            'name' => 'required',
+            'permissions' => 'required'
+        ];
+	}
 }
