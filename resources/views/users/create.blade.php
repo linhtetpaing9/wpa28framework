@@ -32,7 +32,7 @@
 								<label class="control-label text-right">Name</label>
 							</div>
 							<div class="col-md-9">
-								<input type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+								<input type="text" class="form-control" name="name" value="{{ old('name') }}"  autofocus>
 
 								@if ($errors->has('name'))
 								<span class="help-block">
@@ -83,7 +83,7 @@
 							<label class="control-label text-right">Email</label>
 						</div>
 						<div class="col-md-9">
-							<input type="text" class="form-control" name="email" value="{{ old('email') }}" required>
+							<input type="text" class="form-control" name="email" value="{{ old('email') }}" >
 
 							@if ($errors->has('email'))
 							<span class="help-block">
@@ -104,7 +104,7 @@
 							<label class="control-label text-right">Password</label>
 						</div>
 						<div class="col-md-9">
-							<input type="password" class="form-control" name="password" required>
+							<input type="password" class="form-control" name="password" >
 
 							@if ($errors->has('password'))
 							<span class="help-block">
@@ -120,7 +120,7 @@
 							<label class="control-label text-right">Confirm Password</label>
 						</div>
 						<div class="col-md-9">
-							<input type="password" class="form-control" name="password_confirmation" required>
+							<input type="password" class="form-control" name="password_confirmation" >
 						</div>
 					</div>
 

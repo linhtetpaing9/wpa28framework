@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Redirect;
+use App\Repositories\Users;
+use App\Repositories\Roles;
+use App\Repositories\Requests;
 use App\User;
 use App\Role;
 
@@ -15,74 +18,33 @@ class UserController extends Controller
         $this->middleware('auth');
         $this->middleware('superadmin');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+ 
+
     public function index()
     {
-
+        
         return view('users.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+ 
+    public function create(Roles $roles)
     {
-        $role = Role::pluck('name', 'id');
+        $role = $roles->pluck();
         return view('users.create', compact('role'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+  
+    public function store(Requests $requests, Users $users)
     {
-        $this->validate(request(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'profile_image' => 'required'
-        ]);
-
-    
-        if($request->is_admin == "true"){
-            $request->is_admin = true;
-        }else {
-            $request->is_admin = false;
-        }
-
-
-
-        $name = $request->name;
-        $slug = str_slug($name, "-");
-
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'slug' => $slug,
-            'is_admin' => $request->is_admin,
-            'profile_image' => $request->profile_image,
-            'password' => bcrypt($request->password),
-
-
-        ]);
-
-
-        $user = User::where('name', $request->name)->first();
-        $role = Role::where('id', $request->role_id)->first();
-        $user->roles()->attach($role);
         
+        $this->validate($requests->validate(), $requests->userCreateData());
+      
+        $users->create();
+
+        $users->attachID();
 
 
-         return Redirect::route('user.index');
+        return Redirect::route('user.index');
     }
 
 
@@ -117,46 +79,12 @@ class UserController extends Controller
         return abort(404);
     }
 
-
-    // public function showRole(Role $role)
-    // {
-    //     $users = $role->users;
-    //     return view('users.user-role', compact('users'));
-    // }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
+    public function show(User $user, Users $users)
     {
+        
+
         $roles = $user->roles;
-
-        $roles_status = [];
-
-        if($roles[0]->permissions['show-task']){
-            $roles_status['show'] = 'can see post';
-        }else{
-            $roles_status['show'] = 'cannot see post';
-        }
-
-
-        if($roles[0]->permissions['update-task']){
-            $roles_status['update'] = 'can update post';
-        }else{
-            $roles_status['update'] = 'cannot update post';
-        }
-
-
-        if($roles[0]->permissions['delete-task']){
-            $roles_status['delete'] = 'can delete post';
-        }else{
-            $roles_status['delete'] = 'cannot delete post';
-        }
-       
-       // dd($roles_status);
+        $roles_status = $users->show($roles);
 
         if($user->is_admin){
             return view('users.profile', compact('user', 'roles', 'roles_status'));
@@ -166,64 +94,21 @@ class UserController extends Controller
         
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
+    public function edit(User $user, Roles $roles)
     {
-        $role = Role::pluck('name', 'id');
+        $role = $roles->pluck();
         return view('users.edit', compact('user', 'role'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
+    public function update(Requests $requests, Users $users, User $user)
     {
-        $this->validate(request(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:6|confirmed',
-            'profile_image' => 'required'
-        ]);
+        $this->validate($requests->validate(), $requests->userEditData());
 
-        $user = User::where('id', $user->id)->first();
-        $user->roles()->detach();
+        $users->detachID($user);
 
-        if($request->is_admin == "true"){
-            $request->is_admin = true;
-        }else {
-            $request->is_admin = false;
-        }
-
-
-
-        $name = $request->name;
-        $slug = str_slug($name, "-");
-
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'slug' => $slug,
-            'is_admin' => $request->is_admin,
-            'profile_image' => $request->profile_image,
-            'password' => bcrypt($request->password),
-
-
-        ]);
+        $users->update();
         
-
-
-        $user = User::where('name', $request->name)->first();
-        $role = Role::where('id', $request->role_id)->first();
-        $user->roles()->attach($role);
+        $users->attachID();
 
         
         auth()->login($user);
@@ -231,20 +116,16 @@ class UserController extends Controller
         return Redirect::route('user.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
+    public function upload()
     {
-        $user = User::where('slug', $user->slug)->first();
-        $user->roles()->detach();
-        $user = User::where('slug', $user->slug)->delete();
+        return view('upload');
+    }
 
-        
 
+    public function destroy(User $user, Users $users)
+    {
+        $users->detachID($user);
+        $users->delete($user);
         return Redirect::route('user.index');
     }
 }
