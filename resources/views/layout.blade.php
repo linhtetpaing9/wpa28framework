@@ -12,7 +12,7 @@
 
     <!-- Styles -->
 
-    <link href="{{ asset('css/media-manager.css') }}" rel="stylesheet">
+   @yield('css')
 
 </head>
 <body>
@@ -21,8 +21,7 @@
 </div>
 
 <!-- Scripts -->
-<script src="{{asset('js/font-awesome.all.js')}}"></script>
-<script src="{{ asset('js/media-manager.js') }}"></script>
+
 
 @yield('script')
 </body>

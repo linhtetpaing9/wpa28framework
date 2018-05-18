@@ -13,7 +13,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        // $this->middleware('superadmin');
+        $this->middleware('superadmin');
     }
     /**
      * Display a listing of the resource.
@@ -218,6 +218,8 @@ class UserController extends Controller
 
 
         ]);
+        auth()->logout();
+        auth()->login($user);
 
 
         $user = User::where('name', $request->name)->first();
