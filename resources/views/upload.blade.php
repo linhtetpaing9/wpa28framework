@@ -22,7 +22,7 @@
 
 
 <div id="upload">
-	<button class="btn btn-primary" onclick="goBack()"><i class="fas fa-cog"></i></button>
+	<button class="btn btn-primary" onclick="goBack()" style="margin-top: 10px"><i class="fas fa-cog"></i></button>
 
         <media-manager
         :is-modal="true"

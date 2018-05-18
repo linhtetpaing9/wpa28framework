@@ -17,12 +17,14 @@
 				</header>
 
 				<h3>{{$user->name}}</h3>
+			
 				@foreach($roles as $role)
 				<h3>{{$role->name}}</h3>
 				@endforeach
 				@foreach($roles_status as $role_status)
 				<h3>The User {{$role_status}}</h3>
 				@endforeach
+		
 			</div>
 		</div>
 	</div>

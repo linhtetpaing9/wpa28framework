@@ -53,8 +53,9 @@ class UserController extends Controller
     public function show(User $user, Users $users)
     {
 
-
+    if(empty($user->roles)){
         $roles = $user->roles;
+        
         $roles_status = $users->show($roles);
 
         if($user->is_admin){
@@ -62,6 +63,9 @@ class UserController extends Controller
         }else{
             return view('fronts.profile', compact('user', 'roles'));
         }
+    }else {
+        return view('users.role-error', compact('user'));
+    }
         
     }
 
@@ -77,7 +81,7 @@ class UserController extends Controller
 
         $users->detachID($user);
 
-        $users->update();
+        $users->update($user);
         
         $users->attachID();
 

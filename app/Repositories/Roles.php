@@ -55,52 +55,54 @@ class Roles{
             ]
 
         ]);
-	}
+    }
 
-	public function update()
-	{
-		if($this->request->delete == "true"){
-            $this->request->delete = true;
-        }else {
-            $this->request->delete = false;
-        }
+    public function update($role)
+    {
+      if($this->request->delete == "true"){
+        $this->request->delete = true;
+    }else {
+        $this->request->delete = false;
+    }
 
-        if($this->request->show == "true"){
-            $this->request->show = true;
-        }else{
-            $this->request->show = false;
-        }
+    if($this->request->show == "true"){
+        $this->request->show = true;
+    }else{
+        $this->request->show = false;
+    }
 
-        if($this->request->update == "true"){
-            $this->request->update = true;
-        }else{
-            $this->request->update = false;
-        }
+    if($this->request->update == "true"){
+        $this->request->update = true;
+    }else{
+        $this->request->update = false;
+    }
 
-        $name = $this->request->name;
-        $slug = str_slug($name, "-");
+    $name = $this->request->name;
+    $slug = str_slug($name, "-");
 
-        $this->role->update([
-            'name' => $this->request->name,
-            'slug' => $slug,
-            'permissions' => [
-                'update-task' => $this->request->update,
-                'delete-task' => $this->request->delete,
-                'show-task' => $this->request->show
+    $role->update([
+        'name' => $this->request->name,
+        'slug' => $slug,
+        'permissions' => [
+            'update-task' => $this->request->update,
+            'delete-task' => $this->request->delete,
+            'show-task' => $this->request->show
 
-            ]
+        ]
 
-        ]);
-	}
+    ]);
+}
 
-	public function detachID($role)
-	{
-		$role = $this->role->where('slug', $role->slug)->first();
-        $role->users()->detach();
-	}
 
-	public function delete($role)
-	{
-		return $this->role->where('slug', $role->slug)->delete();
-	}
+
+public function detachID($role)
+{
+  $role = $this->role->where('slug', $role->slug)->first();
+  $role->users()->detach();
+}
+
+public function delete($role)
+{
+  return $this->role->where('slug', $role->slug)->delete();
+}
 }

@@ -65,7 +65,7 @@ class Users{
 	}
 
 
-	public function update()
+	public function update($user)
 	{
 		if($this->request->is_admin == "true"){
             $this->request->is_admin = true;
@@ -76,7 +76,7 @@ class Users{
         $name = $this->request->name;
         $slug = str_slug($name, "-");
 
-		return $this->user->update([
+		return $user->update([
             'name' => $this->request->name,
             'email' => $this->request->email,
             'slug' => $slug,

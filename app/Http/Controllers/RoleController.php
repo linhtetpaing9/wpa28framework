@@ -109,11 +109,12 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Requests $requests, Roles $roles)
+    public function update(Requests $requests, Role $role, Roles $roles)
     {
         $this->validate($requests->validate(), $requests->roleCreateData());
 
-        $roles->update();
+        $roles->update($role);
+
 
         return Redirect::route('role.index');
     }
