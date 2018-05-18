@@ -130,7 +130,7 @@
                         <a class="nav-link dropdown-toggle text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{Auth::user()->profile_image}}" alt="user" class="profile-pic" height="30px" /></a>
                         <div class="dropdown-menu dropdown-menu-right animated zoomIn">
                             <ul class="dropdown-user">
-                                <li><a href="#"><i class="ti-user"></i> Profile</a></li>
+                                <li><a href="{{route('user.show', Auth::user()->slug)}}"><i class="ti-user"></i>{{Auth::user()->name}}</a></li>
                                 
                                 <li><a href="{{ route('logout') }}" 
                                     onclick="event.preventDefault();

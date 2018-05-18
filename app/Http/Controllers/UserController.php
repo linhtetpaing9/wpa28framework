@@ -52,20 +52,22 @@ class UserController extends Controller
 
     public function show(User $user, Users $users)
     {
-
-    if(empty($user->roles)){
-        $roles = $user->roles;
+        // dd($user->roles);
         
-        $roles_status = $users->show($roles);
+        if(isset($user->roles[0])){
+            $roles = $user->roles;
 
-        if($user->is_admin){
-            return view('users.profile', compact('user', 'roles', 'roles_status'));
-        }else{
-            return view('fronts.profile', compact('user', 'roles'));
+            $roles_status = $users->show($roles);
+
+            if($user->is_admin){
+                return view('users.profile', compact('user', 'roles', 'roles_status'));
+            }else{
+                return view('fronts.profile', compact('user', 'roles'));
+            }
+            
+        }else {
+            return view('users.role-error', compact('user'));
         }
-    }else {
-        return view('users.role-error', compact('user'));
-    }
         
     }
 
