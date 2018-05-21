@@ -88,7 +88,6 @@ class Users{
 
 	public function attachID()
 	{
-		
         $user = $this->user->where('name', $this->request->name)->first();
         $role = $this->role->where('id', $this->request->role_id)->first();
         $user->roles()->attach($role);
