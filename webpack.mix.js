@@ -15,7 +15,9 @@ mix.js([
 	'resources/assets/js/media-manager-custom.js'
 	], 'public/js/mediamanager.js')
    .styles('resources/assets/talvbansal/media-manager/css/media-manager.css', 'public/css/mediamanager.css');
-
+mix.js([
+	'resources/assets/js/instantsearch.js'
+	], 'public/js/instantsearch.js');
  mix.scripts([
  	'resources/assets/js/jquery.min.js',
  	'resources/assets/js/bootstrap.min.js',

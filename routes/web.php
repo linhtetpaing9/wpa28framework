@@ -30,7 +30,9 @@ Route::prefix('admin')->group(function(){
 	Route::get('upload', 'UserController@upload')->name('upload.data');
 });
 
-
+Route::get('/instantsearch', function(){
+	return view('instantsearch');
+});
 
 
 Route::get('/home', 'HomeController@index')->name('home');
